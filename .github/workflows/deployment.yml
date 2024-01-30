@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1  # Use v1 instead of v2
 
       - name: Set up Git
         run: |
@@ -22,16 +22,15 @@ jobs:
         run: |
           MESSAGE=$(git log -1 --pretty=%B)
           if [[ $MESSAGE == *"YES"* ]]; then
-            export DEPLOY_BRANCH="FE"
+            DEPLOY_BRANCH="FE"
           else
-            export DEPLOY_BRANCH="QA"
+            DEPLOY_BRANCH="QA"
           fi
 
       - name: Deploy to Branch
         run: |
-          git fetch origin $DEPLOY_BRANCH
           git checkout $DEPLOY_BRANCH
           git merge dev
-          git push origin $DEPLOY_BRANCH
+          git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
