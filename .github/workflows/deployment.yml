@@ -16,6 +16,7 @@ jobs:
           git config --global user.name "kushilkumar"
           git clone https://github.com/kushilkumar/githubrepo.git .
           git checkout $GITHUB_SHA  # Check out the commit associated with the push
+
       - name: Check Commit Message
         run: |
           MESSAGE=$(git log -1 --pretty=%B)
@@ -24,13 +25,11 @@ jobs:
           else
             DEPLOY_BRANCH="refs/heads/QA"
           fi
-      - name: Deploy to Branch
+
+      - name: Create and Deploy to Branch
         run: |
-          git checkout dev
-          git fetch origin dev:refs/remotes/origin/dev
-          git checkout -b temp_branch origin/dev
-          git checkout $DEPLOY_BRANCH
-          git merge temp_branch
+          git checkout -b $DEPLOY_BRANCH
+          git merge dev
           git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
