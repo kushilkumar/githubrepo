@@ -15,10 +15,13 @@ jobs:
         git config --global user.email "kushilkumar000@gmail.com"
         git config --global user.name "kushilkumar"
 
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
     - name: Determine deployment branch
       id: check_commit_message
       run: |
-        commit_message=$(cd $GITHUB_WORKSPACE && git log -1 --pretty=format:"%s")
+        commit_message=$(git log -1 --pretty=format:"%s")
         echo "::set-output name=deploy_branch::$commit_message"
 
     - name: Deploy to FE or QA
