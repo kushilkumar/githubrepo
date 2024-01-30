@@ -28,8 +28,9 @@ jobs:
 
       - name: Create and Deploy to Branch
         run: |
-          git checkout -b $DEPLOY_BRANCH
+          git checkout -b temp_branch
           git merge dev
+          git branch -m $DEPLOY_BRANCH
           git push --set-upstream origin $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
