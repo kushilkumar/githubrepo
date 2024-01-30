@@ -1,0 +1,30 @@
+name: Deploy on Commit
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Check Commit Message
+        run: |
+          MESSAGE=$(git log -1 --pretty=%B)
+          if [[ $MESSAGE == *"YES"* ]]; then
+            DEPLOY_BRANCH="FE"
+          else
+            DEPLOY_BRANCH="QA"
+          fi
+
+      - name: Deploy to Branch
+        run: |
+          git checkout $DEPLOY_BRANCH
+          git merge dev
+          # Additional deployment steps go here
+          git push origin $DEPLOY_BRANCH
