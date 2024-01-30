@@ -13,6 +13,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Set up Git
+        run: |
+          git config --global user.email "kushilkumar000@gmail.com"
+          git config --global user.name "kushilkumar"
+
       - name: Check Commit Message
         run: |
           MESSAGE=$(git log -1 --pretty=%B)
@@ -24,11 +29,8 @@ jobs:
 
       - name: Deploy to Branch
         run: |
-          git config --global user.email "kushilkumar000@gmail.com"
-          git config --global user.name "kushilkumar"
           git checkout $DEPLOY_BRANCH
           git merge dev
-          # Additional deployment steps go here
           git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
