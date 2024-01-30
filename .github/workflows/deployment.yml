@@ -22,15 +22,16 @@ jobs:
         run: |
           MESSAGE=$(git log -1 --pretty=%B)
           if [[ $MESSAGE == *"YES"* ]]; then
-            DEPLOY_BRANCH="FE"
+            export DEPLOY_BRANCH="FE"
           else
-            DEPLOY_BRANCH="QA"
+            export DEPLOY_BRANCH="QA"
           fi
 
       - name: Deploy to Branch
         run: |
+          git fetch origin $DEPLOY_BRANCH
           git checkout $DEPLOY_BRANCH
           git merge dev
-          git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
+          git push origin $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
