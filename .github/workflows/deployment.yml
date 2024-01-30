@@ -18,7 +18,7 @@ jobs:
     - name: Determine deployment branch
       id: check_commit_message
       run: |
-        commit_message=$(git log -1 --pretty=format:"%s")
+        commit_message=$(cd $GITHUB_WORKSPACE && git log -1 --pretty=format:"%s")
         echo "::set-output name=deploy_branch::$commit_message"
 
     - name: Deploy to FE or QA
