@@ -30,7 +30,7 @@ jobs:
           git fetch origin dev:refs/remotes/origin/dev
           git checkout -b temp_branch origin/dev
           git checkout $DEPLOY_BRANCH
-          git merge temp_branch
+          git merge FE
           git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
