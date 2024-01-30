@@ -24,7 +24,11 @@ jobs:
 
       - name: Deploy to Branch
         run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
           git checkout $DEPLOY_BRANCH
           git merge dev
           # Additional deployment steps go here
-          git push origin $DEPLOY_BRANCH
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
