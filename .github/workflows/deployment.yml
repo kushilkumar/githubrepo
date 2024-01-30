@@ -1,4 +1,4 @@
-name: Deploy on Dev Commit
+name: File Deployment Workflow
 
 on:
   push:
@@ -10,21 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set Git user email and name
-        run: |
-          git config --global user.email "kushilkumar000@gmail.com"
-          git config --global user.name "kushilkumar"
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Determine deploy branch
-        id: determine_branch
-        run: echo "::set-output name=branch::$(if [[ $(git log -1 --pretty=%B) == *'[deploy-yes]'* ]]; then echo 'FE'; else echo 'QA'; fi)"
+    - name: Set up Git
+      run: |
+        git config --global user.email "kushilkumar000@gmail.com"
+        git config --global user.name "kushilkumar"
 
-      - name: Deploy
-        run: |
-          if [ "${{ steps.determine_branch.outputs.branch }}" == "FE" ]; then
-            git push origin HEAD:FE
-          elif [ "${{ steps.determine_branch.outputs.branch }}" == "QA" ]; then
-            git push origin HEAD:QA
-          else
-            echo "No deploy action specified."
-          fi
+    - name: Determine deployment branch
+      id: check_commit_message
+      run: echo "::set-output name=deploy_branch::$(echo ${{ github.event.head_commit.message }} | tr '[:upper:]' '[:lower:]')"
+
+    - name: Deploy to FE or QA
+      run: |
+        if [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == "yes" ]]; then
+          git checkout -b FE
+        elif [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == "no" ]]; then
+          git checkout -b QA
+        else
+          echo "Invalid commit message. Please use 'YES' or 'NO'."
+          exit 1
+        fi
+        git push origin HEAD
+
+    - name: Cleanup
+      run: git checkout dev
