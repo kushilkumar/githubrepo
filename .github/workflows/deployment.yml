@@ -17,17 +17,17 @@ jobs:
 
     - name: Determine deployment branch
       id: check_commit_message
-      run: echo "::set-output name=deploy_branch::${{ github.event.head_commit.message }}"
+      run: echo "::set-output name=deploy_branch::${{ github.event.commits[0].message }}"
 
     - name: Deploy to FE or QA
       run: |
         commit_message="${{ steps.check_commit_message.outputs.deploy_branch }}"
-        if [[ $commit_message == *"yes"* ]]; then
+        if [[ $commit_message == *"YES"* ]]; then
           git checkout -b FE
-        elif [[ $commit_message == *"no"* ]]; then
+        elif [[ $commit_message == *"NO"* ]]; then
           git checkout -b QA
         else
-          echo "Invalid commit message. Please include 'yes' or 'no' in the commit message."
+          echo "Invalid commit message. Please include 'YES' or 'NO' in the commit message."
           exit 1
         fi
         git push origin HEAD
