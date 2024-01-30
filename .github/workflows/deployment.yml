@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Set up Git
       run: |
         git config --global user.email "kushilkumar000@gmail.com"
@@ -20,16 +17,16 @@ jobs:
 
     - name: Determine deployment branch
       id: check_commit_message
-      run: echo "::set-output name=deploy_branch::$(echo ${{ github.event.head_commit.message }} | tr '[:upper:]' '[:lower:]')"
+      run: echo "::set-output name=deploy_branch::${{ github.event.head_commit.message }}"
 
     - name: Deploy to FE or QA
       run: |
-        if [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == "yes" ]]; then
+        if [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == *"yes"* ]]; then
           git checkout -b FE
-        elif [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == "no" ]]; then
+        elif [[ "${{ steps.check_commit_message.outputs.deploy_branch }}" == *"no"* ]]; then
           git checkout -b QA
         else
-          echo "Invalid commit message. Please use 'YES' or 'NO'."
+          echo "Invalid commit message. Please include 'yes' or 'no' in the commit message."
           exit 1
         fi
         git push origin HEAD
