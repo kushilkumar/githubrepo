@@ -31,4 +31,4 @@ jobs:
           # Additional deployment steps go here
           git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ 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 }}
