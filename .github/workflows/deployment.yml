@@ -24,8 +24,8 @@ jobs:
 
       - name: Deploy to Branch
         run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.email "kushilkumar000@gmail.com"
+          git config --global user.name "kushilkumar"
           git checkout $DEPLOY_BRANCH
           git merge dev
           # Additional deployment steps go here
