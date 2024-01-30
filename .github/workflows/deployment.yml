@@ -10,13 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v1  # Use v1 instead of v2
-
       - name: Set up Git
         run: |
           git config --global user.email "kushilkumar000@gmail.com"
           git config --global user.name "kushilkumar"
+          git clone https://github.com/kushilkumar/githubrepo.git .
+          git checkout $GITHUB_SHA  # Check out the commit associated with the push
 
       - name: Check Commit Message
         run: |
