@@ -1,3 +1,4 @@
+
 name: Deploy on Commit
 
 on:
@@ -16,21 +17,21 @@ jobs:
           git config --global user.name "kushilkumar"
           git clone https://github.com/kushilkumar/githubrepo.git .
           git checkout $GITHUB_SHA  # Check out the commit associated with the push
-
       - name: Check Commit Message
         run: |
           MESSAGE=$(git log -1 --pretty=%B)
           if [[ $MESSAGE == *"YES"* ]]; then
-            DEPLOY_BRANCH="FE"
+            DEPLOY_BRANCH="refs/heads/FE"
           else
-            DEPLOY_BRANCH="QA"
+            DEPLOY_BRANCH="refs/heads/QA"
           fi
-
-      - name: Create and Deploy to Branch
+      - name: Deploy to Branch
         run: |
+          git checkout dev
           git fetch origin dev:refs/remotes/origin/dev
-          git checkout -b $DEPLOY_BRANCH origin/dev
-          git merge dev
-          git push --set-upstream origin $DEPLOY_BRANCH
+          git checkout -b temp_branch origin/dev
+          git checkout $DEPLOY_BRANCH
+          git merge temp_branch
+          git push "https://kushilkumar:${{ secrets.GITHUB_TOKEN }}@github.com/kushilkumar/githubrepo.git" $DEPLOY_BRANCH
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
