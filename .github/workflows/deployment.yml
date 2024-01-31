@@ -13,9 +13,6 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Navigate to Repository
-      run: cd $GITHUB_WORKSPACE
-
     - name: Determine deployment branch
       run: |
         commit_message=$(git log -1 --pretty=format:"%s")
@@ -34,9 +31,5 @@ jobs:
         else
           # If commit message is empty or doesn't contain "YES", deploy to QA
           git checkout -b QA
-          git pull origin QA  # Pull the latest changes from QA branch
           git push origin HEAD:QA
         fi
-
-    - name: Cleanup
-      run: git checkout dev
