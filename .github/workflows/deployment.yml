@@ -19,6 +19,10 @@ jobs:
     - name: Determine deployment branch
       run: |
         commit_message=$(git log -1 --pretty=format:"%s")
+
+        # Set a default commit message if empty
+        commit_message="${commit_message:-DEFAULT}"
+
         echo "::set-output name=deploy_branch::$commit_message"
 
     - name: Deploy to FE or QA
@@ -27,12 +31,10 @@ jobs:
         if [[ $commit_message == *"YES"* ]]; then
           git checkout -b FE
           git push origin HEAD:FE
-        elif [[ $commit_message == *"NO"* ]]; then
+        else
+          # If commit message is empty or doesn't contain "YES", deploy to QA
           git checkout -b QA
           git push origin HEAD:QA
-        else
-          echo "Invalid commit message. Please include 'YES' or 'NO' in the commit message."
-          exit 1
         fi
 
     - name: Cleanup
