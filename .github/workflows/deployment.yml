@@ -17,7 +17,6 @@ jobs:
 
     - name: Fetch commit message
       run: |
-        git fetch
         commit_message=$(git log -1 --pretty=format:"%s" $GITHUB_SHA)
         echo "::set-output name=deploy_branch::$commit_message"
 
