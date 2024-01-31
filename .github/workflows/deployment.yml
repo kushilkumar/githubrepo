@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Navigate to Repository
+      run: cd $GITHUB_WORKSPACE
+
     - name: Determine deployment branch
       run: |
         commit_message=$(git log -1 --pretty=format:"%s")
