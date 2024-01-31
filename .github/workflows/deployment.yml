@@ -31,7 +31,7 @@ jobs:
         else
           # If commit message is empty or doesn't contain "YES", deploy to QA
           git checkout -b QA
-          git pull origin QA  # Pull the latest changes from QA branch
+          git pull --no-rebase origin QA  # Pull the latest changes from QA branch with merge
           git push origin HEAD:QA
         fi
 
