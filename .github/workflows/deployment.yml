@@ -1,4 +1,4 @@
-name: Print GitHub Environment
+name: File Deployment Workflow
 
 on:
   push:
@@ -6,19 +6,28 @@ on:
       - dev
 
 jobs:
-  print_environment:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up Git
-      run: git config --global user.email "kushilkumar000@gmail.com" && git config --global user.name "kushilkumar"
-
-    - name: Print Environment Variables
+    - name: Determine deployment branch
       run: |
-        echo "GitHub Environment Variables:"
-        env | grep GITHUB
+        commit_message=$(git log -1 --pretty=format:"%s")
+        echo "::set-output name=deploy_branch::$commit_message"
 
-    - name: Print System Information
+    - name: Deploy to FE or QA
       run: |
-        echo "System Information:"
-        uname -a
+        commit_message="${{ steps.deploy.outputs.deploy_branch }}"
+        if [[ $commit_message == *"YES"* ]]; then
+          git checkout -b FE
+          git push origin HEAD:FE
+        elif [[ $commit_message == *"NO"* ]]; then
+          git checkout -b QA
+          git push origin HEAD:QA
+        else
+          echo "Invalid commit message. Please include 'YES' or 'NO' in the commit message."
+          exit 1
+        fi
+
+    - name: Cleanup
+      run: git checkout dev
