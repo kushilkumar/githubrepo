@@ -34,3 +34,6 @@ jobs:
           git pull origin QA  # Pull the latest changes from QA branch
           git push origin HEAD:QA
         fi
+
+    - name: Cleanup
+      run: git checkout dev
