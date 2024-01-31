@@ -15,15 +15,14 @@ jobs:
         git config --global user.email "kushilkumar000@gmail.com"
         git config --global user.name "kushilkumar"
 
-    - name: Determine deployment branch
-      id: check_commit_message
+    - name: Fetch commit message
       run: |
-        commit_message=$(git log -1 --pretty=format:"%s")
+        commit_message=$(git log -1 --pretty=format:"%s" $GITHUB_SHA)
         echo "::set-output name=deploy_branch::$commit_message"
 
     - name: Deploy to FE or QA
       run: |
-        commit_message="${{ steps.check_commit_message.outputs.deploy_branch }}"
+        commit_message="${{ steps.fetch_commit_message.outputs.deploy_branch }}"
         if [[ $commit_message == *"YES"* ]]; then
           git checkout -b FE
         elif [[ $commit_message == *"NO"* ]]; then
