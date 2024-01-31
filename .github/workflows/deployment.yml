@@ -17,7 +17,7 @@ jobs:
 
     - name: Fetch commit message
       run: |
-        commit_message=$(git log -1 --pretty=format:"%s" $GITHUB_SHA)
+        commit_message=$(git log -1 --pretty=format:"%s" $(git rev-parse HEAD))
         echo "::set-output name=deploy_branch::$commit_message"
 
     - name: Deploy to FE or QA
