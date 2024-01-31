@@ -32,7 +32,7 @@ jobs:
           # If commit message is empty or doesn't contain "YES", deploy to QA
           git checkout -b QA
           git pull --no-rebase origin QA  # Pull the latest changes from QA branch with merge
-          git push origin HEAD:QA
+          git push --force-with-lease origin HEAD:QA
         fi
 
     - name: Cleanup
