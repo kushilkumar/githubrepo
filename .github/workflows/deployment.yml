@@ -15,9 +15,6 @@ jobs:
         git config --global user.email "kushilkumar000@gmail.com"
         git config --global user.name "kushilkumar"
 
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
     - name: Determine deployment branch
       id: check_commit_message
       run: |
