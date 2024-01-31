@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
     - name: Set up Git
       run: |
         git config --global user.email "kushilkumar000@gmail.com"
@@ -25,13 +28,14 @@ jobs:
         commit_message="${{ steps.fetch_commit_message.outputs.deploy_branch }}"
         if [[ $commit_message == *"YES"* ]]; then
           git checkout -b FE
+          git push origin HEAD:FE
         elif [[ $commit_message == *"NO"* ]]; then
           git checkout -b QA
+          git push origin HEAD:QA
         else
           echo "Invalid commit message. Please include 'YES' or 'NO' in the commit message."
           exit 1
         fi
-        git push origin HEAD
 
     - name: Cleanup
       run: git checkout dev
