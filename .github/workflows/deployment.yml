@@ -21,10 +21,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Determine Deployment Branch
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          if [[ "$COMMIT_MESSAGE" == *yes* ]]; then
+            DEPLOY_BRANCH="FE"
+          else
+            DEPLOY_BRANCH="QA"
+          fi
+          echo "Deploying to $DEPLOY_BRANCH branch"
+
       - name: Deploy
         run: |
-          if [[ "$(git log -1 --pretty=%B)" == *yes* ]]; then
-            git push origin HEAD:FE
-          else
-            git push origin HEAD:QA
-          fi
+          git push origin HEAD:$DEPLOY_BRANCH
