@@ -1,0 +1,3 @@
+﻿Issued date,ID,Type,Due date,Status,Currency,Invoice amount,Balance due,Billing period,Service provider,Charge type,Purchase order ID,Payer account ID
+"January 2, 2024","1540528281","Invoice","January 2, 2024","Past due","INR","716.23","716.23","December 2023","AWS India","Usage","-","107243712643"
+"December 3, 2023","1514396157","Invoice","December 3, 2023","Past due","INR","235.82","235.82","November 2023","AWS India","Usage","-","107243712643"
